@@ -30,7 +30,7 @@ To Compile:
                   src/com/smartpark/*.java
 
 To Run:
-    java -cp bin com.smartpark.Main
+    java -cp .\bin com.smartpark.Main
 
 PROJECT STRUCTURE
 =================
