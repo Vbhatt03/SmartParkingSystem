@@ -23,7 +23,7 @@ Prerequisites:
 
 To Compile:
     cd SmartParkingSystem
-    javac -d bin src/com/smartpark/exceptions/*.java \
+    javac -d .\bin (Get-ChildItem -Path .\src -Recurse -Filter *.java | Select-Object -ExpandProperty FullName)\
                   src/com/smartpark/utils/*.java \
                   src/com/smartpark/users/*.java \
                   src/com/smartpark/io/*.java \
