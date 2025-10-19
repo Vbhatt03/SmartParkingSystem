@@ -1,0 +1,634 @@
+================================================================================
+                    PROJECT FILE STRUCTURE & CONTENTS
+              Smart Parking Management System - Complete Java Project
+================================================================================
+
+This document lists all source files, their purpose, and location.
+
+================================================================================
+DIRECTORY STRUCTURE
+================================================================================
+
+SmartParkingSystem/
+├── src/
+│   └── com/smartpark/
+│       ├── Main.java                                    [Entry Point]
+│       ├── ParkingLot.java                             [Model]
+│       ├── Booking.java                                [Entity]
+│       ├── Payment.java                                [Entity]
+│       │
+│       ├── exceptions/
+│       │   ├── NoAvailableSlotException.java          [Custom Exception #1]
+│       │   └── InvalidBookingException.java           [Custom Exception #2]
+│       │
+│       ├── users/
+│       │   ├── User.java                               [Abstract Base]
+│       │   ├── Admin.java                              [Subclass #1]
+│       │   ├── Attendant.java                          [Subclass #2]
+│       │   └── Customer.java                           [Subclass #3]
+│       │
+│       ├── io/
+│       │   └── DataStore.java                          [DAO/Persistence]
+│       │
+│       └── utils/
+│           ├── Billing.java                            [Interface #1]
+│           ├── Loggable.java                           [Interface #2]
+│           ├── Logger.java                             [Implementation]
+│           └── Report.java                             [Utility]
+│
+├── bin/                                                 [Compiled Classes]
+├── data/                                                [Persistent Storage]
+│   ├── users.txt
+│   ├── bookings.txt
+│   ├── payments.txt
+│   └── system_logs.txt
+│
+└── Documentation Files
+    ├── README.md                                        [Project Overview]
+    ├── REQUIREMENTS_MATRIX.txt                         [12 Reqs Mapping]
+    ├── DEMO_TRANSCRIPT.txt                             [Sample Interaction]
+    └── FILE_STRUCTURE.txt                              [This File]
+
+================================================================================
+SOURCE FILES DETAILED DESCRIPTION
+================================================================================
+
+PACKAGE: com.smartpark (Main Application Logic)
+═════════════════════════════════════════════════════════
+
+1. Main.java (Entry Point)
+───────────────────────────
+   Location: src/com/smartpark/Main.java
+   Purpose: Application entry point with Scanner-based console interface
+   Size: ~700 lines
+   
+   Key Sections:
+   - main() method: Application initialization and event loop
+   - initializeSystem(): Load data from files, initialize parking lot
+   - initializeSampleData(): Create default users
+   - loginMenu(): Main menu with login/register options
+   - login(): User authentication
+   - register(): New customer registration
+   - adminDashboard(): Admin operations menu
+   - attendantDashboard(): Attendant operations menu
+   - customerDashboard(): Customer operations menu
+   - manageSlots(): Admin view all parking slots
+   - viewReports(): Admin view system reports
+   - viewSystemLogs(): Admin view activity logs
+   - viewUsers(): Admin view all users
+   - checkInVehicle(): Attendant check-in function
+   - checkOutVehicle(): Attendant check-out with payment
+   - viewSlotStatus(): Attendant view slot availability
+   - bookParkingSlot(): Customer book parking
+   - viewMyBookings(): Customer view their bookings
+   - cancelBooking(): Customer cancel active booking
+   - viewInvoice(): Customer view payment receipts
+   - saveAllData(): Save all data to files on exit
+   
+   OOP Features:
+   - Demonstrates all 12 requirements
+   - Uses Scanner for console I/O
+   - Handles exceptions gracefully
+   - Polymorphic method calls
+   - Uses varargs for logging
+
+2. ParkingLot.java (Model & Controller)
+─────────────────────────────────────────
+   Location: src/com/smartpark/ParkingLot.java
+   Purpose: Manage parking lot slots and availability
+   Size: ~250 lines
+   
+   Nested Classes:
+   - Slot (static nested class)
+     * Represents individual parking slot
+     * Slot number, type, occupancy status
+     * Vehicle info and customer reference
+   
+   - AvailabilityMonitor (non-static inner class)
+     * Implements nested Metrics interface
+     * Tracks slot availability
+     * Provides occupancy statistics
+     * Maintains availability log
+   
+   - Metrics (nested interface)
+     * getTotalSlots()
+     * getAvailableSlots()
+     * getOccupiedSlots()
+     * getOccupancyRate()
+   
+   Key Methods (Overloaded):
+   - allocateSlot(String, String) - Any available slot
+   - allocateSlot(String, String, String) - With type preference
+   - allocateSlot(int, String, String) - Specific slot number
+   - deallocateSlot(int) - Release slot
+   - deallocateSlot(int, String) - Release with reason
+   - getSlot(int) - Retrieve slot info
+   - getAllSlots() - Get all slots
+   - getAvailableSlots() - Get free slots
+   - getSlotsByType(String) - Filter by type
+   
+   OOP Features:
+   - Requirement #1: Nested classes & interface
+   - Requirement #9: Method overloading
+   - Exception handling: NoAvailableSlotException
+
+3. Booking.java (Entity)
+──────────────────────────
+   Location: src/com/smartpark/Booking.java
+   Purpose: Represent and manage parking bookings
+   Size: ~150 lines
+   
+   Properties:
+   - bookingId: Unique identifier
+   - customerId: Customer making booking
+   - slotNumber: Assigned parking slot
+   - checkInTime: Entry timestamp
+   - checkOutTime: Exit timestamp
+   - status: ACTIVE, COMPLETED, CANCELLED
+   - vehicleNumber: License plate
+   
+   Constructors (Overloaded):
+   1. Full constructor with all parameters
+   2. Minimal constructor with ID and customer
+   
+   Key Methods (Overloaded):
+   - calculateDuration() - Using stored checkout
+   - calculateDuration(LocalDateTime) - Custom checkout time
+   - calculateDuration(String) - String-formatted time
+   - getBookingInfo() - Simple summary
+   - getBookingInfo(boolean) - Detailed view
+   
+   OOP Features:
+   - Requirement #9: Method overloading (5 methods)
+   - Requirement #10: Constructor overloading (2 constructors)
+
+4. Payment.java (Entity with Interface)
+────────────────────────────────────────
+   Location: src/com/smartpark/Payment.java
+   Purpose: Handle payment processing and billing
+   Size: ~180 lines
+   
+   Implements: Billing interface
+   
+   Properties:
+   - paymentId: Unique payment ID
+   - bookingId: Associated booking
+   - amount: Double wrapper (REQUIREMENT #12)
+   - parkingHours: Integer wrapper (REQUIREMENT #12)
+   - paymentStatus: PENDING, COMPLETED
+   - paymentTime: When payment processed
+   
+   Static Fields:
+   - HOURLY_RATE: 50.0 (Rs. per hour)
+   
+   Constructors (Overloaded):
+   1. Full constructor with hours
+   2. Minimal constructor without amount
+   
+   Key Methods (Overloaded):
+   - calculateFare(int) - Basic rate
+   - calculateFare(int, double) - With multiplier
+   - calculateFare(int, double, boolean) - Custom rate
+   - processPayment(double) - Double parameter
+   - processPayment(Integer) - Integer wrapper parameter
+   - generateReceipt() - Receipt string
+   
+   OOP Features:
+   - Requirement #3: Implements Billing interface
+   - Requirement #5: Multiple interface capability
+   - Requirement #9: Method overloading (4+ methods)
+   - Requirement #10: Constructor overloading (2 constructors)
+   - Requirement #12: Wrapper classes (Integer, Double)
+
+================================================================================
+PACKAGE: com.smartpark.exceptions (Custom Exceptions)
+═════════════════════════════════════════════════════════
+
+1. NoAvailableSlotException.java
+─────────────────────────────────
+   Location: src/com/smartpark/exceptions/NoAvailableSlotException.java
+   Purpose: Thrown when no parking slots are available
+   Size: ~20 lines
+   
+   Extends: Exception
+   
+   Constructors:
+   - NoAvailableSlotException(String message)
+   - NoAvailableSlotException(String message, Throwable cause)
+   
+   Usage:
+   - Thrown by ParkingLot.allocateSlot() methods
+   - Caught in Main.java bookParkingSlot() and checkInVehicle()
+   
+   OOP Features:
+   - Requirement #7: Custom exception for business logic
+
+2. InvalidBookingException.java
+────────────────────────────────
+   Location: src/com/smartpark/exceptions/InvalidBookingException.java
+   Purpose: Thrown for invalid booking operations
+   Size: ~20 lines
+   
+   Extends: Exception
+   
+   Constructors:
+   - InvalidBookingException(String message)
+   - InvalidBookingException(String message, Throwable cause)
+   
+   Usage:
+   - Thrown by Main.java cancelBooking() method
+   - Validates booking state before operations
+   
+   OOP Features:
+   - Requirement #7: Custom exception for domain logic
+
+================================================================================
+PACKAGE: com.smartpark.users (User Management)
+════════════════════════════════════════════════
+
+1. User.java (Abstract Base Class)
+────────────────────────────────────
+   Location: src/com/smartpark/users/User.java
+   Purpose: Abstract base class for all user types
+   Size: ~100 lines
+   
+   Properties (Protected):
+   - userId: User identifier
+   - username: Login username
+   - password: Login password
+   - fullName: User's name
+   - role: User type (ADMIN, ATTENDANT, CUSTOMER)
+   
+   Constructors (Overloaded):
+   1. Full constructor (5 parameters)
+   2. Minimal constructor (username, password)
+   
+   Abstract Methods:
+   - displayDashboard(): Role-specific dashboard
+   - performAction(): Role-specific operation
+   
+   Concrete Methods:
+   - authenticate(String): Password verification
+   - toString(): String representation
+   - Getters and Setters for all properties
+   
+   OOP Features:
+   - Requirement #2: Abstract class with abstract methods
+   - Requirement #4: Base for inheritance hierarchy
+   - Requirement #10: Constructor overloading
+
+2. Admin.java (Subclass)
+──────────────────────────
+   Location: src/com/smartpark/users/Admin.java
+   Purpose: Administrative user with system management capabilities
+   Size: ~60 lines
+   
+   Extends: User
+   
+   Additional Properties:
+   - canManageUsers: Permission flag
+   - canViewReports: Permission flag
+   
+   Constructors (Overloaded):
+   1. Full constructor (4 parameters)
+   2. Minimal constructor (username, password)
+   
+   Overridden Methods:
+   - displayDashboard(): Admin menu
+   - performAction(): Admin action stub
+   
+   Additional Methods:
+   - isCanManageUsers()
+   - isCanViewReports()
+   
+   OOP Features:
+   - Requirement #4: Concrete subclass of User
+   - Requirement #10: Constructor overloading
+
+3. Attendant.java (Subclass)
+─────────────────────────────
+   Location: src/com/smartpark/users/Attendant.java
+   Purpose: Parking attendant for vehicle check-in/check-out
+   Size: ~65 lines
+   
+   Extends: User
+   
+   Additional Properties:
+   - vehiclesProcessed: Count of vehicles handled
+   - canCheckIn: Permission for check-in
+   - canCheckOut: Permission for check-out
+   
+   Constructors (Overloaded):
+   1. Full constructor (4 parameters)
+   2. Minimal constructor (username, password)
+   
+   Overridden Methods:
+   - displayDashboard(): Attendant menu with stats
+   - performAction(): Attendant action stub
+   
+   Additional Methods:
+   - incrementVehiclesProcessed()
+   - getVehiclesProcessed()
+   - isCanCheckIn()
+   - isCanCheckOut()
+   
+   OOP Features:
+   - Requirement #4: Concrete subclass of User
+   - Requirement #10: Constructor overloading
+
+4. Customer.java (Subclass)
+────────────────────────────
+   Location: src/com/smartpark/users/Customer.java
+   Purpose: Customer who books parking slots
+   Size: ~80 lines
+   
+   Extends: User
+   
+   Additional Properties:
+   - vehicleNumber: License plate
+   - vehicleType: Car, Motorcycle, etc.
+   - activeBookings: Count of active reservations
+   
+   Constructors (Overloaded):
+   1. Full constructor (5 parameters including vehicle)
+   2. Minimal constructor (username, password)
+   
+   Overridden Methods:
+   - displayDashboard(): Customer menu with vehicle info
+   - performAction(): Customer action stub
+   
+   Additional Methods:
+   - getVehicleNumber(), setVehicleNumber()
+   - getVehicleType(), setVehicleType()
+   - getActiveBookings(), setActiveBookings()
+   - incrementActiveBookings()
+   - decrementActiveBookings()
+   
+   OOP Features:
+   - Requirement #4: Concrete subclass of User
+   - Requirement #10: Constructor overloading
+
+================================================================================
+PACKAGE: com.smartpark.io (Input/Output & Persistence)
+════════════════════════════════════════════════════════
+
+1. DataStore.java (DAO - Data Access Object)
+──────────────────────────────────────────────
+   Location: src/com/smartpark/io/DataStore.java
+   Purpose: Manage file I/O and data persistence
+   Size: ~250 lines
+   
+   Files Managed:
+   - users.txt: User account information
+   - bookings.txt: Parking booking records
+   - payments.txt: Payment transaction history
+   - system_logs.txt: System event log
+   
+   Key Methods:
+   
+   Save Operations:
+   - saveUsers(List<User>)
+   - saveBookings(List<Booking>)
+   - savePayments(List<Payment>)
+   - logEvent(String)
+   
+   Load Operations (Scanner-based):
+   - loadUsers() - Parse users.txt with Scanner
+   - loadBookings() - Parse bookings.txt with Scanner
+   - loadPayments() - Parse payments.txt with Scanner
+   - readLogs() - Parse system_logs.txt with Scanner
+   
+   Initialization:
+   - initializeDataDirectory(): Create data/ and files
+   
+   File Format:
+   - Pipe-delimited text files
+   - One record per line
+   - User: ROLE|ID|USERNAME|PASSWORD|FULLNAME|[VEHICLE|TYPE]
+   - Booking: ID|CUSTOMER|SLOT|VEHICLE|CHECKIN|STATUS
+   - Payment: ID|BOOKING|HOURS|AMOUNT|STATUS
+   
+   OOP Features:
+   - Requirement #8: File I/O with Scanner input
+   - Exception handling: FileNotFoundException
+   - Factory pattern: Reconstructs objects from file data
+
+================================================================================
+PACKAGE: com.smartpark.utils (Utilities)
+═══════════════════════════════════════════
+
+1. Billing.java (Interface)
+─────────────────────────────
+   Location: src/com/smartpark/utils/Billing.java
+   Purpose: Define billing contract for payment processing
+   Size: ~20 lines
+   
+   Methods:
+   - calculateFare(int hours): double
+   - generateReceipt(): String
+   - processPayment(double amount): boolean
+   
+   Implementation: Payment class
+   
+   OOP Features:
+   - Requirement #3: Interface definition
+   - Requirement #5: Base for multiple implementation
+
+2. Loggable.java (Interface)
+──────────────────────────────
+   Location: src/com/smartpark/utils/Loggable.java
+   Purpose: Define logging contract
+   Size: ~20 lines
+   
+   Methods:
+   - log(String event): void
+   - getLogs(): String
+   - clearLogs(): void
+   
+   Implementation: Logger class
+   
+   OOP Features:
+   - Requirement #3: Interface definition
+   - Requirement #5: Base for multiple implementation
+
+3. Logger.java (Implementation)
+────────────────────────────────
+   Location: src/com/smartpark/utils/Logger.java
+   Purpose: Implement logging functionality
+   Size: ~100 lines
+   
+   Implements: Loggable
+   
+   Properties:
+   - logs: List<String> in-memory log storage
+   - formatter: DateTimeFormatter for timestamps
+   
+   Implemented Methods:
+   - log(String event): Add timestamped event
+   - getLogs(): Return all logs as string
+   - clearLogs(): Remove all logs
+   
+   Varargs Methods (Overloaded):
+   1. logMultiple(String... events): Log multiple at once
+   2. logWithContext(String context, String... messages): Add context
+   3. logEvents(LogLevel level, String... events): With severity level
+   
+   Nested Enum:
+   - LogLevel: INFO, WARNING, ERROR, SUCCESS
+   
+   OOP Features:
+   - Requirement #3: Implements Loggable interface
+   - Requirement #11: Varargs overloading (3 methods)
+
+4. Report.java (Reporting Utility)
+────────────────────────────────────
+   Location: src/com/smartpark/utils/Report.java
+   Purpose: Generate flexible system reports
+   Size: ~120 lines
+   
+   Properties:
+   - reportId: Unique report identifier
+   - generatedTime: Report creation time
+   - formatter: DateTimeFormatter
+   
+   Varargs Methods (Overloaded):
+   1. generateReport(String title, String... dataRows)
+      - Simple report with data rows
+   
+   2. generateTableReport(String title, String[] columns, String... rows)
+      - Formatted table with column headers
+   
+   3. generateMetricsReport(String title, Object... metrics)
+      - Flexible object-based metrics
+   
+   4. generateSummaryReport(String title, String... keyValuePairs)
+      - Key-value pair summary format
+   
+   OOP Features:
+   - Requirement #11: Varargs overloading (4 methods)
+   - Flexible reporting architecture
+
+================================================================================
+COMPILED OUTPUT
+═════════════════
+
+After compilation, the bin/ directory contains:
+
+com/smartpark/
+├── Main.class
+├── ParkingLot.class
+├── ParkingLot$Slot.class              (Nested static class)
+├── ParkingLot$AvailabilityMonitor.class (Nested inner class)
+├── ParkingLot$Metrics.class            (Nested interface)
+├── Booking.class
+├── Payment.class
+├── exceptions/
+│   ├── NoAvailableSlotException.class
+│   └── InvalidBookingException.class
+├── users/
+│   ├── User.class
+│   ├── Admin.class
+│   ├── Attendant.class
+│   └── Customer.class
+├── io/
+│   └── DataStore.class
+└── utils/
+    ├── Billing.class                  (Interface)
+    ├── Loggable.class                 (Interface)
+    ├── Logger.class
+    ├── Logger$LogLevel.class           (Nested enum)
+    └── Report.class
+
+Total: 18 class files
+
+================================================================================
+DEPENDENCY RELATIONSHIPS
+═══════════════════════════
+
+Main.java depends on:
+  → ParkingLot, Booking, Payment
+  → All users (Admin, Attendant, Customer)
+  → All exceptions
+  → DataStore, Logger, Report
+
+ParkingLot.java imports:
+  → NoAvailableSlotException
+
+Booking.java imports:
+  → LocalDateTime, DateTimeFormatter (java.time)
+
+Payment.java imports:
+  → Billing interface
+  → LocalDateTime (java.time)
+
+Admin/Attendant/Customer extend:
+  → User (abstract base)
+
+Logger implements:
+  → Loggable interface
+
+DataStore imports:
+  → All user classes (for object reconstruction)
+  → Booking, Payment
+  → Files, Paths, Scanner from java.nio and java.io
+
+Report uses:
+  → LocalDateTime, DateTimeFormatter (java.time)
+
+================================================================================
+DATA PERSISTENCE FILES
+═════════════════════════
+
+Location: data/ directory (created automatically)
+
+1. users.txt
+─────────────
+Format: ROLE|ID|USERNAME|PASSWORD|FULLNAME|[VEHICLE|TYPE]
+Example:
+  ADMIN|ADMIN-001|admin|admin123|John Manager
+  CUSTOMER|CUST-001|customer1|cust123|Alice Johnson|ABC-1234|Car
+
+2. bookings.txt
+────────────────
+Format: ID|CUSTOMER|SLOT|VEHICLE|CHECKIN|STATUS
+Example:
+  BOOK-A7F2K|CUST-001|5|ABC-1234|2025-10-19T13:45:45|COMPLETED
+
+3. payments.txt
+────────────────
+Format: ID|BOOKING|HOURS|AMOUNT|STATUS
+Example:
+  PAY-K9L2M|BOOK-A7F2K|2|100.00|COMPLETED
+
+4. system_logs.txt
+────────────────────
+Format: [TIMESTAMP] EVENT
+Example:
+  [2025-10-19 13:45:12] System initialized
+  [2025-10-19 13:47:15] Vehicle ABC-1234 checked out from slot 5
+
+================================================================================
+COMPILATION & EXECUTION REFERENCE
+═════════════════════════════════════
+
+Compile All Files:
+──────────────────
+javac -d bin \
+  src/com/smartpark/exceptions/*.java \
+  src/com/smartpark/utils/*.java \
+  src/com/smartpark/users/*.java \
+  src/com/smartpark/io/*.java \
+  src/com/smartpark/*.java
+
+Run Application:
+────────────────
+java -cp bin com.smartpark.Main
+
+Verify Compilation:
+───────────────────
+ls bin/com/smartpark/
+  (Should show all .class files listed above)
+
+================================================================================
+END OF FILE STRUCTURE DOCUMENTATION
+================================================================================

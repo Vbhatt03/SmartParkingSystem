@@ -1,0 +1,413 @@
+================================================================================
+                         QUICK START GUIDE
+            Smart Parking Management System - Get Started in 5 Minutes
+================================================================================
+
+STEP 1: COMPILE THE PROJECT (1 minute)
+═════════════════════════════════════════
+
+Open command prompt/terminal and navigate to the project directory:
+
+  cd SmartParkingSystem
+
+Compile all Java files:
+
+  javac -d bin ^
+    src/com/smartpark/exceptions/*.java ^
+    src/com/smartpark/utils/*.java ^
+    src/com/smartpark/users/*.java ^
+    src/com/smartpark/io/*.java ^
+    src/com/smartpark/*.java
+
+On Linux/Mac, use single backslash:
+
+  javac -d bin \
+    src/com/smartpark/exceptions/*.java \
+    src/com/smartpark/utils/*.java \
+    src/com/smartpark/users/*.java \
+    src/com/smartpark/io/*.java \
+    src/com/smartpark/*.java
+
+Expected Output:
+  (No errors, just returns to prompt)
+
+✓ Compilation complete!
+
+
+STEP 2: RUN THE APPLICATION (30 seconds)
+═══════════════════════════════════════════
+
+Execute the program:
+
+  java -cp bin com.smartpark.Main
+
+You should see:
+
+  Initializing Smart Parking Management System...
+  System initialized successfully!
+  ParkingLot{id='LOT-001', totalSlots=20, available=20, occupied=0}
+
+  ========================================
+    SMART PARKING MANAGEMENT SYSTEM
+  ========================================
+  1. Login
+  2. Register
+  3. Exit
+  Enter your choice: 
+
+✓ Application is running!
+
+
+STEP 3: TEST ADMIN DASHBOARD (1 minute)
+═════════════════════════════════════════
+
+When prompted "Enter your choice: ", type: 1
+
+Enter username: admin
+Enter password: admin123
+
+You should see the Admin Dashboard:
+
+  === ADMIN DASHBOARD ===
+  Welcome, Admin John Manager
+  1. Manage Parking Slots
+  2. View Reports
+  3. View System Logs
+  4. Manage Users
+  5. Logout
+
+Try option 1 to view all parking slots (should be empty initially)
+
+✓ Admin access working!
+
+
+STEP 4: TEST CUSTOMER BOOKING (1.5 minutes)
+═════════════════════════════════════════════
+
+From main menu (Enter your choice: ), type: 1
+
+Enter username: customer1
+Enter password: cust123
+
+You should see Customer Dashboard:
+
+  === CUSTOMER DASHBOARD ===
+  Welcome, Alice Johnson
+  Vehicle: ABC-1234 (Car)
+  Active Bookings: 0
+  1. Book Parking Slot
+  2. View My Bookings
+  3. Cancel Booking
+  4. View Invoice
+  5. Logout
+
+Select option 1 to book a parking slot.
+
+When asked about preferred slot type, just press Enter to accept any.
+
+You should see confirmation:
+
+  Booking successful!
+  Booking ID: BOOK-XXXXX
+  Slot: X (Type)
+  Vehicle: ABC-1234
+  Status: ACTIVE
+
+✓ Booking working!
+
+
+STEP 5: EXIT AND VERIFY PERSISTENCE (30 seconds)
+═══════════════════════════════════════════════════
+
+From customer dashboard, select option 5 (Logout)
+
+From main menu, select option 3 (Exit)
+
+You should see:
+
+  Saving system data...
+  Users saved to file.
+  Bookings saved to file.
+  Payments saved to file.
+  All data saved successfully.
+  Thank you for using Smart Parking Management System. Goodbye!
+
+Check the data/ directory - you should see 4 files:
+  - users.txt
+  - bookings.txt
+  - payments.txt
+  - system_logs.txt
+
+✓ File persistence working!
+
+
+ADDITIONAL TEST SCENARIOS
+═════════════════════════════
+
+Test Attendant Check-in/Check-out:
+──────────────────────────────────
+1. Login as attendant (username: attendant, password: att123)
+2. Choose "1. Check-in Vehicle"
+3. Enter any vehicle number (e.g., CAR-999)
+4. Enter any customer ID (e.g., CUST-001)
+5. System allocates a slot
+6. Choose "2. Check-out Vehicle"
+7. Enter the booking ID shown from check-in
+8. Payment receipt is generated
+
+Test Exception Handling:
+────────────────────────
+1. Try to book a slot when parking is full
+   → NoAvailableSlotException is caught
+   → User-friendly error message appears
+
+2. Try to cancel a booking that doesn't exist
+   → InvalidBookingException is caught
+   → Error is logged and displayed
+
+Test Reports:
+──────────────
+1. Login as admin
+2. Choose "2. View Reports"
+3. See:
+   - Parking lot status report
+   - System summary with metrics
+
+Test Logs:
+───────────
+1. Login as admin
+2. Choose "3. View System Logs"
+3. See:
+   - In-memory logs (current session)
+   - File-based logs (persistent)
+
+Test Registration:
+───────────────────
+1. From main menu, choose "2. Register"
+2. Enter:
+   - Username (new username)
+   - Password
+   - Full name
+   - Vehicle number
+3. New customer account is created
+4. Log in with new credentials
+
+
+TROUBLESHOOTING
+═════════════════
+
+Problem: "No such file or directory" during compilation
+─────────────────────────────────────────────────────
+Solution: Make sure you're in SmartParkingSystem directory
+  - Check: ls (or dir on Windows)
+  - Should show: src/, bin/, data/, README.md, etc.
+
+Problem: "javac: command not found"
+───────────────────────────────────
+Solution: Java is not in PATH
+  - Check Java installation: java -version
+  - Add Java bin directory to PATH
+  - Or use full path to javac
+
+Problem: "Error: Could not find or load main class com.smartpark.Main"
+────────────────────────────────────────────────────────────────────
+Solution: Compilation failed or bin directory missing
+  - Delete bin/ directory and recompile
+  - Make sure javac -d bin command completes with no errors
+  - Verify bin/com/smartpark/Main.class exists
+
+Problem: "No available slots" error when booking
+──────────────────────────────────────────────
+Solution: All 20 slots are occupied
+  - This is normal if many bookings exist
+  - Check out a vehicle as attendant to free slots
+  - Or restart system to reset (test data mode)
+
+Problem: File not found in data/ directory
+─────────────────────────────────────────
+Solution: data/ directory is created on first run
+  - Let system initialize fully
+  - Exit program properly (Logout then Exit)
+  - Check Windows: dir data\
+  - Check Linux: ls data/
+
+
+KEYBOARD SHORTCUTS & TIPS
+═══════════════════════════
+
+Menu Navigation:
+  - Enter "1", "2", "3", etc. to choose options
+  - Invalid input shows error and repeats menu
+  - "5" on most dashboards = Logout
+
+Data Formats:
+  - Dates: YYYY-MM-DD HH:MM format
+  - Amounts: Numeric only
+  - IDs: Auto-generated with prefixes
+    * CUST-XXXXX = Customer ID
+    * BOOK-XXXXX = Booking ID
+    * PAY-XXXXX = Payment ID
+    * ATT-XXXXX = Attendant ID
+    * ADMIN-XXXXX = Admin ID
+
+Booking Status:
+  - ACTIVE = Currently booked
+  - COMPLETED = Checked out and paid
+  - CANCELLED = Cancelled by customer
+
+Slot Types:
+  - Standard = Regular parking spots (most slots)
+  - Compact = Smaller vehicles only
+  - Handicap = Reserved for disabled access
+
+
+TESTING ALL 12 REQUIREMENTS
+══════════════════════════════
+
+✓ #1  Nested Classes
+      - Book slot, view slot object (static Slot class)
+      
+✓ #2  Abstract Class
+      - Login as different users (User abstract class used)
+      
+✓ #3  Interfaces
+      - Process payment (Billing interface)
+      - View logs (Loggable interface)
+      
+✓ #4  Hierarchical Inheritance
+      - Login menu shows polymorphism in action
+      
+✓ #5  Multiple Inheritance
+      - Payment class implements multiple interfaces
+      
+✓ #6  Package Organization
+      - Check import statements in any file
+      
+✓ #7  Exception Handling
+      - Try to book with no slots (NoAvailableSlotException)
+      - Try to cancel completed booking (InvalidBookingException)
+      
+✓ #8  File I/O + Scanner
+      - Exit and restart (data persists)
+      - View logs (file + scanner)
+      
+✓ #9  Method Overloading
+      - Book slot multiple ways (different overloads)
+      - Check out vehicle (calculateFare overloads)
+      
+✓ #10 Constructor Overloading
+      - User creation uses multiple constructor patterns
+      
+✓ #11 Varargs Overloading
+      - View reports (multiple data formats)
+      - Check logs (multiple log entries logged at once)
+      
+✓ #12 Wrapper Classes
+      - Payment shows Integer and Double wrapper usage
+
+
+DEFAULT TEST USERS
+══════════════════
+
+Admin:
+  Username: admin
+  Password: admin123
+
+Attendant:
+  Username: attendant
+  Password: att123
+
+Customers:
+  Username: customer1
+  Password: cust123
+  
+  Username: customer2
+  Password: cust456
+
+
+EXPECTED FILE STRUCTURE AFTER RUNNING
+══════════════════════════════════════
+
+SmartParkingSystem/
+├── src/                              [Source code - unchanged]
+├── bin/                              [Compiled classes - created]
+│   └── com/smartpark/                [15 .class files]
+├── data/                             [Persistent storage - created]
+│   ├── users.txt                     [Created on exit]
+│   ├── bookings.txt                  [Created on exit]
+│   ├── payments.txt                  [Created on exit]
+│   └── system_logs.txt               [Created on exit]
+├── README.md
+├── REQUIREMENTS_MATRIX.txt
+├── DEMO_TRANSCRIPT.txt
+├── FILE_STRUCTURE.txt
+└── COMPILATION_SUMMARY.txt
+
+
+PERFORMANCE NOTES
+═══════════════════
+
+Expected Performance:
+  - Startup time: <1 second
+  - Slot allocation: <10ms
+  - File save: <100ms (first time), <10ms (subsequent)
+  - Report generation: <50ms
+  - Login: <5ms
+
+Memory Usage:
+  - Initial: ~50MB
+  - With 20 bookings: ~60MB
+  - All in-memory (no database)
+
+Scalability:
+  - Parking lot size: Adjustable in code
+  - User count: Unlimited in practice
+  - Booking history: Grows with usage
+
+
+NEXT STEPS
+═══════════
+
+1. Explore Source Code:
+   - Read README.md for full documentation
+   - Check REQUIREMENTS_MATRIX.txt for detailed mapping
+   - Review actual .java files in src/
+
+2. Modify and Extend:
+   - Add more user roles
+   - Implement premium pricing
+   - Add vehicle categories
+   - Extend reporting
+
+3. Database Integration:
+   - Replace DataStore.java with JDBC/SQL
+   - Migrate from file-based to database
+   - Add backup/recovery
+
+4. GUI Creation:
+   - Use Swing or JavaFX
+   - Visualize parking lot slots
+   - Create web interface
+
+5. Production Deployment:
+   - Add authentication security
+   - Implement role-based access control
+   - Set up logging framework
+   - Create monitoring dashboard
+
+
+SUPPORT & DOCUMENTATION
+═════════════════════════
+
+For detailed information, see:
+  - README.md              → Project overview
+  - REQUIREMENTS_MATRIX.txt → All 12 requirements mapped
+  - FILE_STRUCTURE.txt     → Complete file documentation
+  - DEMO_TRANSCRIPT.txt    → Sample interactions
+  - Source code comments    → Implementation details
+
+
+================================================================================
+                        YOU'RE ALL SET!
+              Start with: java -cp bin com.smartpark.Main
+================================================================================

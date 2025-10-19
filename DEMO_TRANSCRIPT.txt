@@ -1,0 +1,495 @@
+================================================================================
+              SAMPLE CONSOLE INTERACTION TRANSCRIPT
+        Smart Parking Management System - Demo Session
+================================================================================
+
+This transcript shows a typical interactive session with the system,
+demonstrating all major features and user flows.
+
+================================================================================
+SESSION START - SYSTEM INITIALIZATION
+================================================================================
+
+$ java -cp bin com.smartpark.Main
+
+Initializing Smart Parking Management System...
+System initialized successfully!
+ParkingLot{id='LOT-001', totalSlots=20, available=20, occupied=0}
+
+========================================
+  SMART PARKING MANAGEMENT SYSTEM
+========================================
+1. Login
+2. Register
+3. Exit
+Enter your choice: 1
+
+================================================================================
+LOGIN AS ADMIN
+================================================================================
+
+Enter username: admin
+Enter password: admin123
+Login successful! Welcome, John Manager
+
+=== ADMIN DASHBOARD ===
+Welcome, Admin John Manager
+1. Manage Parking Slots
+2. View Reports
+3. View System Logs
+4. Manage Users
+5. Logout
+
+Enter your choice: 1
+
+=== Manage Parking Slots ===
+ParkingLot{id='LOT-001', totalSlots=20, available=20, occupied=0}
+
+Available slots: 20
+Slot 1 (Standard) - AVAILABLE | Vehicle: 
+Slot 2 (Standard) - AVAILABLE | Vehicle: 
+Slot 3 (Standard) - AVAILABLE | Vehicle: 
+Slot 4 (Standard) - AVAILABLE | Vehicle: 
+Slot 5 (Compact) - AVAILABLE | Vehicle: 
+Slot 6 (Standard) - AVAILABLE | Vehicle: 
+Slot 7 (Standard) - AVAILABLE | Vehicle: 
+Slot 8 (Standard) - AVAILABLE | Vehicle: 
+Slot 9 (Standard) - AVAILABLE | Vehicle: 
+Slot 10 (Handicap) - AVAILABLE | Vehicle: 
+...
+[Continues for all 20 slots]
+
+Enter your choice: 2
+
+=== System Reports ===
+=== PARKING LOT STATUS REPORT ===
+Report ID: REPORT-001
+Generated: 2025-10-19 13:45:30
+---
+Total Slots: 20
+Available Slots: 20
+Occupied Slots: 0
+Occupancy Rate: 0.00%
+Total Bookings: 0
+Total Payments Processed: 0
+---
+
+=== SYSTEM SUMMARY ===
+Report ID: REPORT-001
+Generated: 2025-10-19 13:45:30
+---
+System Status        : Operational
+Total Users          : 4
+Active Bookings      : 0
+Completed Bookings   : 0
+---
+
+Enter your choice: 3
+
+=== System Logs ===
+[2025-10-19 13:45:12] System initialized
+[2025-10-19 13:45:12] Data loaded from persistent storage
+[2025-10-19 13:45:12] Parking lot ready with 20 slots
+[2025-10-19 13:45:18] INFO: User admin logged in successfully
+
+File Logs from Persistent Storage:
+[2025-10-19 13:45:12] System initialized
+[2025-10-19 13:45:12] Data loaded from persistent storage
+
+Enter your choice: 4
+
+=== All Users ===
+User{userId='ADMIN-001', username='admin', fullName='John Manager', role='ADMIN'}
+User{userId='ATT-001', username='attendant', fullName='Mike Attendant', role='ATTENDANT'}
+User{userId='CUST-001', username='customer1', fullName='Alice Johnson', role='CUSTOMER'}
+User{userId='CUST-002', username='customer2', fullName='Bob Smith', role='CUSTOMER'}
+
+Enter your choice: 5
+
+Logged out successfully.
+
+========================================
+  SMART PARKING MANAGEMENT SYSTEM
+========================================
+1. Login
+2. Register
+3. Exit
+Enter your choice: 1
+
+================================================================================
+LOGIN AS CUSTOMER & BOOK PARKING
+================================================================================
+
+Enter username: customer1
+Enter password: cust123
+Login successful! Welcome, Alice Johnson
+
+=== CUSTOMER DASHBOARD ===
+Welcome, Alice Johnson
+Vehicle: ABC-1234 (Car)
+Active Bookings: 0
+1. Book Parking Slot
+2. View My Bookings
+3. Cancel Booking
+4. View Invoice
+5. Logout
+
+Enter your choice: 1
+
+=== Book Parking Slot ===
+Available slots: 20
+Preferred slot type (Standard/Compact/Handicap) or press Enter for any: Compact
+Booking successful!
+Booking ID: BOOK-A7F2K
+  Customer: customer1
+  Slot: 5
+  Vehicle: ABC-1234
+  Check-in: 2025-10-19T13:45:45
+  Check-out: null
+  Duration: 0 hours
+  Status: ACTIVE
+
+Enter your choice: 2
+
+=== My Bookings ===
+Booking ID: BOOK-A7F2K
+  Customer: customer1
+  Slot: 5
+  Vehicle: ABC-1234
+  Check-in: 2025-10-19T13:45:45
+  Check-out: null
+  Duration: 0 hours
+  Status: ACTIVE
+---
+
+Enter your choice: 5
+
+Logged out successfully.
+
+========================================
+  SMART PARKING MANAGEMENT SYSTEM
+========================================
+1. Login
+2. Register
+3. Exit
+Enter your choice: 1
+
+================================================================================
+LOGIN AS ATTENDANT & CHECK-IN VEHICLE
+================================================================================
+
+Enter username: attendant
+Enter password: att123
+Login successful! Welcome, Mike Attendant
+
+=== ATTENDANT DASHBOARD ===
+Welcome, Attendant Mike Attendant
+Vehicles Processed Today: 0
+1. Check-in Vehicle
+2. Check-out Vehicle
+3. View Slot Status
+4. Logout
+
+Enter your choice: 1
+
+Enter vehicle number: XYZ-9999
+Enter customer ID: CUST-002
+
+Vehicle checked in successfully!
+Slot: 2 (Standard)
+Booking ID: BOOK-T3M8X
+
+Enter your choice: 2
+
+Enter booking ID: BOOK-A7F2K
+
+Vehicle checked out successfully!
+=== PARKING RECEIPT ===
+Payment ID: PAY-K9L2M
+Booking ID: BOOK-A7F2K
+Parking Hours: 2
+Hourly Rate: Rs. 50.0
+Total Amount: Rs. 100.0
+Status: COMPLETED
+Payment Time: 2025-10-19T13:47:15
+=== END RECEIPT ===
+
+Enter your choice: 3
+
+=== Slot Status ===
+Slot 1 (Standard) - AVAILABLE | Vehicle: 
+Slot 2 (Standard) - OCCUPIED | Vehicle: XYZ-9999
+Slot 3 (Standard) - AVAILABLE | Vehicle: 
+Slot 4 (Standard) - AVAILABLE | Vehicle: 
+Slot 5 (Compact) - AVAILABLE | Vehicle: 
+Slot 6 (Standard) - AVAILABLE | Vehicle: 
+Slot 7 (Standard) - AVAILABLE | Vehicle: 
+Slot 8 (Standard) - AVAILABLE | Vehicle: 
+Slot 9 (Standard) - AVAILABLE | Vehicle: 
+Slot 10 (Handicap) - AVAILABLE | Vehicle: 
+...
+Available: 19 / 20
+
+Enter your choice: 4
+
+Logged out successfully.
+
+========================================
+  SMART PARKING MANAGEMENT SYSTEM
+========================================
+1. Login
+2. Register
+3. Exit
+Enter your choice: 2
+
+================================================================================
+REGISTER NEW CUSTOMER
+================================================================================
+
+Enter username: customer3
+Enter password: newcust123
+Enter full name: David Wilson
+Enter vehicle number: MNO-4567
+
+Registration successful! You can now login.
+
+========================================
+  SMART PARKING MANAGEMENT SYSTEM
+========================================
+1. Login
+2. Register
+3. Exit
+Enter your choice: 1
+
+Enter username: customer3
+Enter password: newcust123
+Login successful! Welcome, David Wilson
+
+=== CUSTOMER DASHBOARD ===
+Welcome, David Wilson
+Vehicle: MNO-4567 (Car)
+Active Bookings: 0
+1. Book Parking Slot
+2. View My Bookings
+3. Cancel Booking
+4. View Invoice
+5. Logout
+
+Enter your choice: 1
+
+=== Book Parking Slot ===
+Available slots: 19
+Preferred slot type (Standard/Compact/Handicap) or press Enter for any: 
+Booking successful!
+Booking ID: BOOK-P5Q9W
+  Customer: customer3
+  Slot: 1
+  Vehicle: MNO-4567
+  Check-in: 2025-10-19T13:48:30
+  Check-out: null
+  Duration: 0 hours
+  Status: ACTIVE
+
+Enter your choice: 3
+
+Enter booking ID to cancel: BOOK-P5Q9W
+Booking cancelled successfully.
+
+Enter your choice: 2
+
+=== My Bookings ===
+Booking ID: BOOK-P5Q9W
+  Customer: customer3
+  Slot: 1
+  Vehicle: MNO-4567
+  Check-in: 2025-10-19T13:48:30
+  Check-out: null
+  Duration: 0 hours
+  Status: CANCELLED
+---
+
+Enter your choice: 4
+
+=== My Invoices ===
+No invoices found.
+
+Enter your choice: 5
+
+Logged out successfully.
+
+================================================================================
+EXCEPTION HANDLING DEMO
+================================================================================
+
+[Session: Customer attempts to book when no slots available]
+
+=== CUSTOMER DASHBOARD ===
+...
+1. Book Parking Slot
+...
+Enter your choice: 1
+
+=== Book Parking Slot ===
+Available slots: 0
+Preferred slot type (Standard/Compact/Handicap) or press Enter for any: 
+
+Booking failed: No available slots in the parking lot!
+
+[System logs exception with ERROR level]
+[Logger captures: "ERROR: Booking failed: No available slots in the parking lot!"]
+
+================================================================================
+INVALID BOOKING CANCELLATION ATTEMPT
+================================================================================
+
+[Session: Customer attempts to cancel non-existent booking]
+
+=== CUSTOMER DASHBOARD ===
+...
+3. Cancel Booking
+...
+Enter your choice: 3
+
+Enter booking ID to cancel: BOOK-INVALID
+
+Cancellation failed: Booking not found with ID: BOOK-INVALID
+
+[Logger captures: "ERROR: Cancellation failed: Booking not found..."]
+
+================================================================================
+SYSTEM SHUTDOWN & DATA PERSISTENCE
+================================================================================
+
+Saving system data...
+Users saved to file.
+Bookings saved to file.
+Payments saved to file.
+All data saved successfully.
+Thank you for using Smart Parking Management System. Goodbye!
+
+================================================================================
+VERIFICATION OF FILE PERSISTENCE
+================================================================================
+
+After system restart, checking data directory:
+
+$ dir data/
+users.txt          - Contains 5 users (including customer3)
+bookings.txt       - Contains all bookings with statuses
+payments.txt       - Contains completed payments
+system_logs.txt    - Contains all logged events
+
+$ cat data/users.txt
+ADMIN|ADMIN-001|admin|admin123|John Manager
+ATTENDANT|ATT-001|attendant|att123|Mike Attendant
+CUSTOMER|CUST-001|customer1|cust123|Alice Johnson|ABC-1234|Car
+CUSTOMER|CUST-002|customer2|cust456|Bob Smith|XYZ-5678|Car
+CUSTOMER|CUST-003|customer3|newcust123|David Wilson|MNO-4567|Car
+
+$ cat data/bookings.txt
+BOOK-A7F2K|customer1|5|ABC-1234|2025-10-19T13:45:45|COMPLETED
+BOOK-T3M8X|customer2|2|XYZ-9999|2025-10-19T13:46:00|ACTIVE
+BOOK-P5Q9W|customer3|1|MNO-4567|2025-10-19T13:48:30|CANCELLED
+
+$ cat data/payments.txt
+PAY-K9L2M|BOOK-A7F2K|2|100.00|COMPLETED
+
+================================================================================
+KEY FEATURES DEMONSTRATED IN TRANSCRIPT
+================================================================================
+
+✓ Package Organization
+  - All classes organized in logical packages
+  - Clean imports throughout
+
+✓ Inheritance & Polymorphism
+  - User abstract class with subclasses
+  - Polymorphic displayDashboard() calls
+  - Role-based routing
+
+✓ Exception Handling
+  - NoAvailableSlotException caught and handled
+  - InvalidBookingException prevented gracefully
+  - User-friendly error messages
+
+✓ File I/O & Scanner
+  - Data loaded from files on startup
+  - All data persisted on shutdown
+  - Scanner used for menu input
+
+✓ Method Overloading
+  - allocateSlot() with different signatures
+  - calculateDuration() variations
+  - Multiple report generation methods
+
+✓ Nested Classes
+  - Slot class used for slot management
+  - AvailabilityMonitor provides metrics
+  - Metrics interface for monitoring
+
+✓ Interfaces & Multiple Implementation
+  - Billing interface implemented
+  - Loggable interface for logging
+  - Consistent contract enforcement
+
+✓ Varargs Usage
+  - logMultiple() for flexible logging
+  - generateReport() with variable rows
+  - generateSummaryReport() with key-value pairs
+
+✓ Wrapper Classes
+  - Integer parkingHours in Payment
+  - Double amount calculations
+  - Auto-boxing/unboxing demonstrated
+
+✓ Constructor Overloading
+  - Full and minimal constructors
+  - Appropriate initialization options
+  - Flexible object creation
+
+================================================================================
+NOTES FOR TESTING
+================================================================================
+
+1. To test the system yourself:
+   
+   a) Compile:
+      javac -d bin src/com/smartpark/exceptions/*.java \
+                    src/com/smartpark/utils/*.java \
+                    src/com/smartpark/users/*.java \
+                    src/com/smartpark/io/*.java \
+                    src/com/smartpark/*.java
+   
+   b) Run:
+      java -cp bin com.smartpark.Main
+   
+   c) Use default credentials:
+      Admin: admin / admin123
+      Attendant: attendant / att123
+      Customer: customer1 / cust123
+
+2. After running, check data/ directory for persistent files:
+   - users.txt
+   - bookings.txt
+   - payments.txt
+   - system_logs.txt
+
+3. Test data persistence:
+   - Create bookings
+   - Exit system
+   - Restart system
+   - Verify bookings still exist
+
+4. Test exception handling:
+   - Try to book with no slots
+   - Try to cancel completed booking
+   - Check error logs
+
+5. Test file I/O:
+   - Monitor data files being updated
+   - Check log file growth
+   - Verify format consistency
+
+================================================================================
+END OF DEMO TRANSCRIPT
+================================================================================
